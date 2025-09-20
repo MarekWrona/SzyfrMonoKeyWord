@@ -2,11 +2,13 @@ import java.util.Scanner;
 
 public class Main {
     static Scanner scanner = new Scanner(System.in);
+    static String alphabet = "";
 
     public static void main(String[] args) {
-        String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        Encrypt encrypt = new Encrypt();
-        Decrypt decrypt = new Decrypt();
+        for (int i = 0; i < 26; i++) {
+            alphabet = alphabet.concat(String.valueOf((char) (97 + i)));
+        }
+        System.out.println(alphabet);
 
         String userChoice;
         do {
@@ -16,15 +18,15 @@ public class Main {
                 case "1" -> {
                     String phrase = getReducedPhrase(alphabet, "zaszyfrowania");
                     String keyWord = getKeyWord();
-                    String codeAlphabet = makeCodeAlphabet(alphabet, keyWord);
-                    String encryptedText = encrypt.encryptText(phrase, alphabet, codeAlphabet);
+                    String codeAlphabet = makeCodeAlphabet(keyWord);
+                    String encryptedText = encryptText(phrase, codeAlphabet);
                     System.out.println("\nZaszyfrowana fraza: \n" + encryptedText);
                 }
                 case "2" -> {
                     String phrase = getReducedPhrase(alphabet, "rozszyfrowania");
                     String keyWord = getKeyWord();
-                    String codeAlphabet = makeCodeAlphabet(alphabet, keyWord);
-                    String decryptedText = decrypt.decryptText(phrase, alphabet, codeAlphabet);
+                    String codeAlphabet = makeCodeAlphabet(keyWord);
+                    String decryptedText = decryptText(phrase, codeAlphabet);
                     System.out.println("\nRozszyfrowana fraza to: \n" + decryptedText);
                 }
                 default -> System.out.println("Do zobaczenia!");
@@ -35,7 +37,7 @@ public class Main {
 
     public static String getReducedPhrase(String alphabet, String option) {
         System.out.println("Podaj zdanie do " + option);
-        String phrase = scanner.nextLine().toUpperCase();
+        String phrase = scanner.nextLine().toLowerCase();
         String reducedPhrase = "";
         for (int i = 0; i < phrase.length(); i++) {
             if (alphabet.contains(String.valueOf(phrase.charAt(i))))
@@ -46,10 +48,10 @@ public class Main {
 
     public static String getKeyWord() {
         System.out.println("Podaj klucz");
-        return scanner.nextLine().toUpperCase();
+        return scanner.nextLine().toLowerCase();
     }
 
-    private static String makeCodeAlphabet(String alphabet, String keyWord) {
+    private static String makeCodeAlphabet(String keyWord) {
         String keyWordReduced = "";
         for (int i = 0; i < keyWord.length(); i++) {
             if (!keyWordReduced.contains(String.valueOf(keyWord.charAt(i))) && alphabet.contains(String.valueOf(keyWord.charAt(i)))) {
@@ -65,6 +67,24 @@ public class Main {
             }
         }
         return codeAlphabet;
+    }
+
+    public static String encryptText(String phrase, String codeAlphabet) {
+        String result = "";
+        for (int i = 0; i < phrase.length(); i++) {
+            int place = alphabet.indexOf(phrase.charAt(i));
+            result = result.concat(String.valueOf(codeAlphabet.charAt(place)));
+        }
+        return result;
+    }
+
+    public static String decryptText(String encryptedPhrase, String codeAlphabet) {
+        String result = "";
+        for (int i = 0; i < encryptedPhrase.length(); i++) {
+            int place = codeAlphabet.indexOf(encryptedPhrase.charAt(i));
+            result = result.concat(String.valueOf(alphabet.charAt(place)));
+        }
+        return result;
     }
 
     private static void printMenu() {
