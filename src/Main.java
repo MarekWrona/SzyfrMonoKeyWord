@@ -8,7 +8,7 @@ public class Main {
         for (int i = 0; i < 26; i++) {
             alphabet = alphabet.concat(String.valueOf((char) (97 + i)));
         }
-        System.out.println(alphabet);
+//        System.out.println(alphabet);
 
         String userChoice;
         do {
@@ -16,14 +16,14 @@ public class Main {
             userChoice = scanner.nextLine();
             switch (userChoice) {
                 case "1" -> {
-                    String phrase = getReducedPhrase(alphabet, "zaszyfrowania");
+                    String phrase = reduceSentence("zaszyfrowania");
                     String keyWord = getKeyWord();
                     String codeAlphabet = makeCodeAlphabet(keyWord);
                     String encryptedText = encryptText(phrase, codeAlphabet);
                     System.out.println("\nZaszyfrowana fraza: \n" + encryptedText);
                 }
                 case "2" -> {
-                    String phrase = getReducedPhrase(alphabet, "rozszyfrowania");
+                    String phrase = reduceSentence("rozszyfrowania");
                     String keyWord = getKeyWord();
                     String codeAlphabet = makeCodeAlphabet(keyWord);
                     String decryptedText = decryptText(phrase, codeAlphabet);
@@ -35,7 +35,7 @@ public class Main {
 
     }
 
-    public static String getReducedPhrase(String alphabet, String option) {
+    public static String reduceSentence(String option) {
         System.out.println("Podaj zdanie do " + option);
         String phrase = scanner.nextLine().toLowerCase();
         String reducedPhrase = "";
@@ -52,16 +52,16 @@ public class Main {
     }
 
     private static String makeCodeAlphabet(String keyWord) {
-        String keyWordReduced = "";
+        String codeAlphabet = "";
         for (int i = 0; i < keyWord.length(); i++) {
-            if (!keyWordReduced.contains(String.valueOf(keyWord.charAt(i))) && alphabet.contains(String.valueOf(keyWord.charAt(i)))) {
-                keyWordReduced = keyWordReduced.concat(String.valueOf(keyWord.charAt(i)));
+            if (!codeAlphabet.contains(String.valueOf(keyWord.charAt(i))) && alphabet.contains(String.valueOf(keyWord.charAt(i)))) {
+                codeAlphabet = codeAlphabet.concat(String.valueOf(keyWord.charAt(i)));
             }
         }
-        String codeAlphabet = keyWordReduced;
-        if (alphabet.length() > keyWordReduced.length()) {
+
+        if (alphabet.length() > codeAlphabet.length()) {
             for (int i = 0; i < alphabet.length(); i++) {
-                if (!keyWordReduced.contains(String.valueOf(alphabet.charAt(i)))) {
+                if (!codeAlphabet.contains(String.valueOf(alphabet.charAt(i)))) {
                     codeAlphabet = codeAlphabet.concat(String.valueOf(alphabet.charAt(i)));
                 }
             }
